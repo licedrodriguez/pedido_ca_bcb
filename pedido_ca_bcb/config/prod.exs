@@ -13,3 +13,10 @@ config :pedido_ca_bcb,
 
 config :logger,
        level: :debug
+
+config :pedido_ca_bcb, PedidoCaBcb.Infrastructure.Adapters.Repository.Repo,
+database: "",
+username: "",
+password: "",
+hostname: "",
+pool_size: 10

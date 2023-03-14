@@ -2,14 +2,17 @@ defmodule PedidoCaBcb.Domain.UseCase.RegistrarClienteUseCase do
   alias PedidoCaBcb.Domain.Model.Cliente
   require Logger
 
+  @cliente_bahavior Application.compile_env(:pedido, :cliente_behavior)
+  @generate_uuid_behavior Application.compile_env(:pedido, :generate_uuid_behavior)
 
   @spec register(map()) :: {:error, atom()} | {:ok, Cliente.t()}
-  def register(info) do
-    with  {:ok, cliente } <- Cliente.new(info[:id], info[:name], info[:lastname], info[:phone], info[:address], info[:email]),
+  def register(data) do
+    new_map = Map.put(data, :id, generate_uuid_cliente())
+    with  {:ok, cliente } <- Cliente.new(new_map[:id], new_map[:identificacion], new_map[:nombres], new_map[:apellidos], new_map[:telefono], new_map[:direccion], new_map[:email]),
           {:ok, _} <- validation(cliente),
-          {:ok, new_cliente} <- register_cliente(cliente)do
+          {:ok, new_cliente} <- register_cliente(cliente) do
             Logger.info("New cliente #{inspect(new_cliente)}")
-            {:ok, new_cliente}
+          {:ok, new_cliente}
     end
 
   end
@@ -19,7 +22,11 @@ defmodule PedidoCaBcb.Domain.UseCase.RegistrarClienteUseCase do
   end
 
   defp register_cliente(cliente) do
-  {:ok, cliente}
+    @cliente_bahavior.register(cliente)
+  end
+
+  defp generate_uuid_cliente() do
+    @generate_uuid_behavior.generate_uuid()
   end
 
 end

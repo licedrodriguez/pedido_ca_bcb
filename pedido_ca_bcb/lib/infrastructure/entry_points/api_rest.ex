@@ -3,8 +3,11 @@ defmodule PedidoCaBcb.Infrastructure.EntryPoint.ApiRest do
   @moduledoc """
   Access point to the rest exposed services
   """
-  alias PedidoCaBcb.Utils.DataTypeUtils
+  alias PedidoCaBcb.Domain.UseCase.DeleteClienteUseCase
+  alias PedidoCaBcb.Domain.UseCase.UpdateClienteUseCase
+  alias PedidoCaBcb.Domain.UseCase.GetClienteUseCase
   alias PedidoCaBcb.Infrastructure.EntryPoint.ErrorHandler
+  alias PedidoCaBcb.Domain.UseCase.RegistrarClienteUseCase
   require Logger
   use Plug.Router
   use Timex
@@ -29,6 +32,42 @@ defmodule PedidoCaBcb.Infrastructure.EntryPoint.ApiRest do
 
   get "/pedido_ca_bcb/api/hello/" do
     build_response("Hello World", conn)
+  end
+
+  get "/pedido_ca_bcb/api/clientes/" do
+    case GetClienteUseCase.find_all() do
+      {:ok, clientes} -> clientes |> build_response(conn)
+    end
+  end
+
+  get "/pedido_ca_bcb/api/clientes/:id" do
+    case GetClienteUseCase.find_by_id(%{id: id}) do
+      {:ok, clientes} -> clientes |> build_response(conn)
+    end
+  end
+
+  post "/pedido_ca_bcb/api/cliente/" do
+    params_map = conn.params |> Map.new(fn {key, value} -> {String.to_atom(key), value} end)
+    case RegistrarClienteUseCase.register(params_map) do
+      {:ok, cliente} -> cliente |> build_response(conn)
+      {:error, error} -> %{status: 500, body: error} |> build_response(conn)
+    end
+  end
+
+  put "/pedido_ca_bcb/api/cliente/:id" do
+    params_map = conn.params |> Map.new(fn {key, value} -> {String.to_atom(key), value} end)
+
+    case UpdateClienteUseCase.update(%{id: id}, params_map) do
+      {:ok, cliente} -> cliente |> build_response(conn)
+      {:error, error} -> %{status: 500, body: error} |> build_response(conn)
+    end
+  end
+
+  delete "/pedido_ca_bcb/api/cliente/:id" do
+    case DeleteClienteUseCase.delete(%{id: id}) do
+      {:ok, clientes} -> clientes |> build_response(conn)
+      {:error, error} -> %{status: 500, body: error} |> build_response(conn)
+    end
   end
 
 
@@ -58,6 +97,8 @@ defmodule PedidoCaBcb.Infrastructure.EntryPoint.ApiRest do
   end
 
   defp build_bad_request_response(response, conn) do
+    response |> IO.inspect()
+    conn |> IO.inspect()
     build_response(%{status: 400, body: response}, conn)
   end
 

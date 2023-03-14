@@ -38,6 +38,7 @@ defmodule PedidoCaBcb.Application do
   end
 
   def env_children(_other_env) do
-    []
+    [
+			{PedidoCaBcb.Infrastructure.Adapters.Repository.Repo, []},]
   end
 end

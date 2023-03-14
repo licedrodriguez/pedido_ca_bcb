@@ -3,23 +3,28 @@ defmodule PedidoCaBcb.Domain.Model.Cliente do
   @moduledoc """
   TODO Updates module description
   """
-    
+
   defstruct [
     :id,
-    :name, 
-    :lastname,
-    :phone,
-    :address,
+    :identificacion,
+    :nombres,
+    :apellidos,
+    :telefono,
+    :direccion,
     :email
   ]
 
-  @type t() :: %__MODULE__{id: String.t(), name: String.t(), lastname: String.t(), phone: number(), address: String.t(), email: String.t()}
+  @type t() :: %__MODULE__{id: binary(), identificacion: String.t(), nombres: String.t(), apellidos: String.t(), telefono: String.t(), direccion: String.t(), email: String.t()}
 
-  @spec new(String.t(), String.t(), String.t(), number(), String.t(), String.t()) :: {:error, :invalid_customer} | {:ok, __MODULE__.t()}
-  def new(_, name, _, _, _, _) when is_nil(name), do: {:error, :invalid_customer}
-  def new(id, name, lastname, phone, address, email) do
-    {:ok, %__MODULE__{id: id, name: name, lastname: lastname, phone: phone, address: address, email: email}}
+  @spec new(binary(), String.t(), String.t(), String.t(), String.t(), String.t(), String.t()) :: {:error, :invalid_customer} | {:ok, __MODULE__.t()}
+  def new(_, _, nombres, _, _, _, _) when is_nil(nombres), do: {:error, :invalid_customer}
+  def new(id, identificacion, nombres, apellidos, telefono, direccion, email) do
+    {:ok, %__MODULE__{id: id, identificacion: identificacion, nombres: nombres, apellidos: apellidos, telefono: telefono, direccion: direccion, email: email}}
   end
-   
+
+  def find_by_id(id) do
+    {:ok, %__MODULE__{id: id}}
+  end
+
 
 end
