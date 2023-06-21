@@ -7,8 +7,8 @@ defmodule PedidoCaBcb.Domain.UseCase.RegistrarClienteUseCase do
 
   @spec register(map()) :: {:error, atom()} | {:ok, Cliente.t()}
   def register(data) do
-    new_map = Map.put(data, :id, generate_uuid_cliente())
-    with  {:ok, cliente } <- Cliente.new(new_map[:id], new_map[:identificacion], new_map[:nombres], new_map[:apellidos], new_map[:telefono], new_map[:direccion], new_map[:email]),
+    #new_map = Map.put(data, :id, generate_uuid_cliente())
+    with  {:ok, cliente } <- Cliente.new(data[:id], data[:identificacion], data[:nombres], data[:apellidos], data[:telefono], data[:direccion], data[:email]),
           {:ok, _} <- validation(cliente),
           {:ok, new_cliente} <- register_cliente(cliente) do
             Logger.info("New cliente #{inspect(new_cliente)}")

@@ -56,7 +56,6 @@ defmodule PedidoCaBcb.Infrastructure.EntryPoint.ApiRest do
 
   put "/pedido_ca_bcb/api/cliente/:id" do
     params_map = conn.params |> Map.new(fn {key, value} -> {String.to_atom(key), value} end)
-
     case UpdateClienteUseCase.update(%{id: id}, params_map) do
       {:ok, cliente} -> cliente |> build_response(conn)
       {:error, error} -> %{status: 500, body: error} |> build_response(conn)

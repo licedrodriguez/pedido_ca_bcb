@@ -15,11 +15,11 @@ config :logger,
        level: :debug
 
 config :pedido_ca_bcb, PedidoCaBcb.Infrastructure.Adapters.Repository.Repo,
-       database: "pedidos_bd",
-       username: "postgres",
-       password: "postgres",
-       hostname: "localhost",
-       pool_size: 10
+        url: "mongodb://localhost:27017/prueba_elixir"
+        # database: "generarpedido",
+        # hostname: "localhost",
+        # port: 27017,
+        # pool_size: 10
 
 config :pedido,
         cliente_behavior: PedidoCaBcb.Infrastructure.Adapters.Repository.Cliente.ClienteDataRepository,

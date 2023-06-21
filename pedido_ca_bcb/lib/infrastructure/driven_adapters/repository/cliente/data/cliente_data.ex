@@ -5,7 +5,7 @@ defmodule PedidoCaBcb.Infrastructure.Adapters.Repository.Cliente.Data.ClienteDat
   ## TODO: Add schema definition
   # Types https://hexdocs.pm/ecto/Ecto.Schema.html#module-primitive-types
 
-  @primary_key {:id, :binary_id, autogenerate: false}
+  @primary_key {:id, :binary_id, autogenerate: true}
   schema "clientes" do
     field :apellidos, :string
     field :direccion, :string

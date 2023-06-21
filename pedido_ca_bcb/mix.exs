@@ -43,6 +43,7 @@ defmodule PedidoCaBcb.MixProject do
       {:timex, "~> 3.0"},
       {:excoveralls, "~> 0.10", only: :test},
       {:ex_unit_sonarqube, "~> 0.1", only: :test},
+      {:mongodb, "~> 0.5.1"},
     ]
   end
 end
